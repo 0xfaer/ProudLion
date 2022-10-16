@@ -28,7 +28,7 @@ int main()
         bool bShell = true;
         std::string szInput = "help";    // shell input
         
-        DiscordUser user = electron.getInterface("localdata_u");
+        DiscordUser user(electron.getInterface("localdata_u"));
         
         // Love spaghetti code 🍝 YUM!
         while(bShell)
@@ -40,7 +40,7 @@ int main()
                 szInput = UI::GetInput("role name >");
                 
                 // check guild validity not needed
-                DiscordGuild guild = electron.getInterface("guild");
+                DiscordGuild guild(electron.getInterface("guild"));
                 
                 if(!user.admin)
                 {
@@ -54,12 +54,12 @@ int main()
             }
             else if(szInput == "crash")
             {
-                DiscordGuild    guild   =   electron.getInterface("guild");
-                DiscordVoip     voip    =   guild.get_joinable_vc();
+                DiscordGuild    guild(electron.getInterface("guild"));
+                DiscordVoip     voip (guild.get_joinable_vc());
                 
                 // * TO FIX: In verified discord servers, cannot get joinable vc!
                 
-                std::string junk_data = GenerateJunk(1024);
+                std::string junk_data = GenerateJunk(1024); // this function is not implemented, impl yourself LOL
                 
                 user.sendpkt(
                     voip,
@@ -79,7 +79,7 @@ int main()
                     😀
                 */
                 
-                DiscordGuild guild = electron.getInterface("guild");
+                DiscordGuild guild(electron.getInterface("guild"));
                 
                 if(user.priv_check(DISCORDPERMFLAG_ADMINISTRATOR))
                 {   
