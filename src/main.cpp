@@ -62,7 +62,7 @@ int main()
                 std::string junk_data = GenerateJunk(1024); // this function is not implemented, impl yourself LOL
                 
                 user.sendpkt(
-                    voip,
+                    &voip,
                     junk_data,
                     0x9 // fools!
                 );
@@ -96,10 +96,10 @@ int main()
                 
                 // assign_role is for assigning temporary roles
                 user.assign_role(
-                    user, 
+                    &user, 
                     "usertomodbot", 
-                    1,
-                    3603 // must add expiry_time + 3
+                    NULL,
+                    NULL // fixed bs
                 );
                 
                 printf("You should be admin for around an hour now.\r\n");
