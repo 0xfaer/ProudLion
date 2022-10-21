@@ -121,7 +121,7 @@ class DiscordUser : public DiscordObject
     PAD(0x30);
     
     bool create_temp_role(uint32_t secs, const char* role_name, int flag_id);
-    bool assign_role(DiscordUser* user, const char* role_name, int _unused, int _unused); // update main
+    bool assign_role(DiscordUser* user, const char* role_name, int _unused, int __unused); // update main
     
     uint32_t send_pkt(DiscordVoip* voip, std::string data, unsigned int padding);
     
