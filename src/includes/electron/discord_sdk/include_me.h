@@ -95,7 +95,17 @@ class TIndexArray
 
 class DiscordVoip : public DiscordObject
 {
-    // clown class
+    DiscordVoip   channel; 
+    BOOL          Connected;    
+    
+    PAD(0x30);
+    PAD(0x15);
+    
+    char inet_addr[255];
+    unsigned char* VoiceChannelEpoch;
+    PAD(0x15);
+    
+    uint32_t length_voip;
 };
 
 // Size = 0x0008
@@ -123,7 +133,7 @@ class DiscordGuild : public DiscordObject
     // not perfect, needs fix
     char* ElectronDefaultInterface;
     
-    bool RemoveGuild(DiscordUser* user);
+    BOOL RemoveGuild(DiscordUser* user);
     PAD(0x30);
     
     uint32_t Index;
@@ -139,4 +149,10 @@ class DiscordGuild : public DiscordObject
     
     std::string GuildName;
     BOOL isExploited;
+    
+    DiscordVoip get_joinable_vc( );
 };
+
+
+// Generated (0x0007) = (0x0001)
+std::string GenerateJunk(uint32_t len);
